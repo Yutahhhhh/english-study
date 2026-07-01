@@ -78,7 +78,7 @@ type Phase = 'setup' | 'active' | 'summary'
 type FlashcardQuizProps = {
   title: string
   items: FlashcardData[]
-  onRate: (id: string, status: ItemProgressStatus) => void | Promise<void>
+  onRate: (id: string, status: ItemProgressStatus, wasCorrect: boolean) => void | Promise<void>
   backTo: string
 }
 
@@ -118,7 +118,7 @@ export function FlashcardQuiz({ title, items, onRate, backTo }: FlashcardQuizPro
   const commitResult = async (status: ItemProgressStatus) => {
     const card = queue[index]
     setResults((prev) => new Map(prev).set(card.id, status))
-    await onRate(card.id, status)
+    await onRate(card.id, status, status !== 'new')
   }
 
   const advance = () => {

@@ -195,6 +195,8 @@ export type Database = {
           status: ItemProgressStatus
           last_reviewed_at: string | null
           updated_at: string
+          correct_count: number
+          incorrect_count: number
         }
         Insert: Partial<Database['public']['Tables']['vocabulary_progress']['Row']> & {
           user_id: string
@@ -223,7 +225,57 @@ export type Database = {
       }
     }
     Views: Record<string, never>
-    Functions: Record<string, never>
+    Functions: {
+      list_vocabulary_notebook: {
+        Args: {
+          p_level?: Level | null
+          p_status?: ItemProgressStatus | null
+          p_search?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          word: string
+          meaning_ja: string
+          part_of_speech: string
+          example_en: string
+          example_ja: string
+          level: Level
+          status: ItemProgressStatus
+          total_count: number
+        }[]
+      }
+      list_vocabulary_quiz_candidates: {
+        Args: {
+          p_level?: Level | null
+          p_status?: ItemProgressStatus | null
+          p_search?: string | null
+          p_limit?: number
+        }
+        Returns: {
+          id: string
+          word: string
+          meaning_ja: string
+          part_of_speech: string
+          example_en: string
+          example_ja: string
+          level: Level
+          status: ItemProgressStatus
+          correct_count: number
+          incorrect_count: number
+          failure_rate: number
+        }[]
+      }
+      record_vocabulary_review: {
+        Args: {
+          p_vocabulary_id: string
+          p_status: ItemProgressStatus
+          p_was_correct: boolean
+        }
+        Returns: undefined
+      }
+    }
     Enums: Record<string, never>
     CompositeTypes: Record<string, never>
   }

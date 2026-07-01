@@ -4,8 +4,12 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const basePath = process.env.BASE_PATH ?? '/'
+const assetPath = basePath.endsWith('/') ? basePath : `${basePath}/`
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: basePath,
   plugins: [
     react(),
     tailwindcss(),
@@ -13,29 +17,29 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/*.png'],
       manifest: {
-        id: '/',
+        id: assetPath,
         name: 'English Study',
         short_name: 'EnglishStudy',
         description: '文法と単語を組み合わせて学ぶ7日間コース形式の英語学習アプリ',
-        start_url: '/',
-        scope: '/',
+        start_url: assetPath,
+        scope: assetPath,
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#1d4ed8',
         lang: 'ja',
         icons: [
           {
-            src: '/icons/icon-192.png',
+            src: `${assetPath}icons/icon-192.png`,
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512.png',
+            src: `${assetPath}icons/icon-512.png`,
             sizes: '512x512',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512-maskable.png',
+            src: `${assetPath}icons/icon-512-maskable.png`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -44,7 +48,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${assetPath}index.html`,
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.hostname.endsWith('supabase.co'),

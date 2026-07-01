@@ -92,7 +92,18 @@ export async function setVocabularyStatus(
   userId: string,
   vocabularyId: string,
   status: ItemProgressStatus,
+  options: { recordAttempt?: boolean; wasCorrect?: boolean } = {},
 ) {
+  if (options.recordAttempt) {
+    const { error } = await supabase.rpc('record_vocabulary_review', {
+      p_vocabulary_id: vocabularyId,
+      p_status: status,
+      p_was_correct: options.wasCorrect ?? status !== 'new',
+    })
+    if (error) throw error
+    return
+  }
+
   const now = new Date().toISOString()
   const { error } = await supabase.from('vocabulary_progress').upsert(
     {
