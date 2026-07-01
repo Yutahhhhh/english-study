@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Sparkles } from 'lucide-react'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useAsyncData } from '@/lib/useAsyncData'
 import { LoadingBlock, ErrorBlock } from '@/components/AsyncState'
@@ -37,6 +39,11 @@ export function GrammarPage() {
     reload()
   }
 
+  const quizParams = new URLSearchParams()
+  if (level !== 'all') quizParams.set('level', level)
+  if (status !== 'all') quizParams.set('status', status)
+  const quizHref = `/grammar/quiz${quizParams.size ? `?${quizParams}` : ''}`
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
       <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
@@ -45,6 +52,23 @@ export function GrammarPage() {
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
         コースに登場した文法項目を復習しよう。
       </p>
+
+      <Link
+        to={quizHref}
+        className="mt-4 flex items-center gap-3 rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 to-blue-50 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-indigo-900/60 dark:from-indigo-500/10 dark:to-blue-500/10"
+      >
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white shadow-sm">
+          <Sparkles size={18} />
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            フラッシュカードでクイズ
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {filtered.length}件の文法項目をカード形式で復習できます
+          </p>
+        </div>
+      </Link>
 
       <div className="mt-4 flex flex-wrap gap-2">
         <select

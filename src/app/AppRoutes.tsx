@@ -6,7 +6,9 @@ import { CoursesPage } from '@/features/courses/CoursesPage'
 import { CourseDetailPage } from '@/features/courses/CourseDetailPage'
 import { LessonDayPage } from '@/features/lesson/LessonDayPage'
 import { VocabularyPage } from '@/features/vocabulary/VocabularyPage'
+import { VocabularyQuizPage } from '@/features/vocabulary/VocabularyQuizPage'
 import { GrammarPage } from '@/features/grammar/GrammarPage'
+import { GrammarQuizPage } from '@/features/grammar/GrammarQuizPage'
 import { SettingsPage } from '@/features/settings/SettingsPage'
 import { Layout } from './Layout'
 
@@ -16,6 +18,10 @@ function withLayout(node: ReactNode) {
       <Layout>{node}</Layout>
     </ProtectedRoute>
   )
+}
+
+function withoutLayout(node: ReactNode) {
+  return <ProtectedRoute>{node}</ProtectedRoute>
 }
 
 export function AppRoutes() {
@@ -30,7 +36,9 @@ export function AppRoutes() {
         element={withLayout(<LessonDayPage />)}
       />
       <Route path="/vocabulary" element={withLayout(<VocabularyPage />)} />
+      <Route path="/vocabulary/quiz" element={withoutLayout(<VocabularyQuizPage />)} />
       <Route path="/grammar" element={withLayout(<GrammarPage />)} />
+      <Route path="/grammar/quiz" element={withoutLayout(<GrammarQuizPage />)} />
       <Route path="/settings" element={withLayout(<SettingsPage />)} />
       <Route path="*" element={<Navigate to="/courses" replace />} />
     </Routes>
