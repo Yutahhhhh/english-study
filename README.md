@@ -17,6 +17,16 @@ Duolingo のような大規模サービスではなく、自分が毎日迷わ�
 - [要件定義](./docs/requirements.md)
 - [設計書](./docs/design.md)
 
+## セットアップ
+
+```bash
+npm install
+cp .env.example .env   # VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY を設定
+npm run dev
+```
+
+Supabaseのテーブル定義・RLSは `supabase/migrations/`、初期教材データは `supabase/seed.sql` にある。
+
 ## 初期方針
 
 AIによる添削や会話機能は初期スコープに含めない。まずは完全無料で動く構成を優先する。
