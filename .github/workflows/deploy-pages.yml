@@ -32,7 +32,13 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Install dependencies
-        run: npm ci
+        # npm ci requires package-lock.json to exactly match package.json,
+        # including OS/arch-specific optional dependency entries. Since this
+        # lockfile is maintained from macOS, `npm install` locally can prune
+        # Linux-only optional entries (e.g. wasm32-wasi rollup/oxide
+        # binaries), which then makes npm ci fail on this ubuntu runner.
+        # npm install is more forgiving and self-heals that drift.
+        run: npm install
 
       - name: Build
         env:
